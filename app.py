@@ -25,65 +25,65 @@ INDICATORS = [
 CITIES: dict[str, dict] = {
     "Bangkok": {
         "color": "#00B4D8",
-        "values": [90, 93, 86, 78, 88],
+        "values": [92, 90, 84, 82, 88],
         "blurb": (
-            "Only Devs still ends with open-mic five-minuters; BKK/hack keeps "
-            "Thong Lo keyboards warm. Ari espresso hits hard—cafe Wi‑Fi is "
-            "good until it isn't, so Hive fiber is the grown-up backup."
+            "Only Devs still ends with capped five-minute lightnings; BKK/hack "
+            "keeps Thong Lo keyboards warm. Ari espresso hits hard—cafe Wi‑Fi "
+            "is good until it isn't, so Hive fiber is the grown-up backup."
         ),
     },
     "Austin": {
         "color": "#F77F00",
-        "values": [88, 78, 84, 92, 95],
+        "values": [86, 80, 82, 94, 96],
         "blurb": (
-            "SXSW lightning pitches and Capital Factory / Station nights until "
-            "1am. Code & Coffee mornings, cold brew on tap, and a networking "
-            "density that feels like BBQ line density."
+            "SXSW pitches and Capital Factory mini-hacks stack the calendar. "
+            "Code & Coffee mornings, cold brew on tap, and a networking density "
+            "that feels like BBQ line density."
         ),
     },
     "Berlin": {
         "color": "#E63946",
-        "values": [93, 86, 96, 72, 78],
+        "values": [96, 88, 97, 70, 80],
         "blurb": (
             "Hack and Tell's five-minute show-and-roast at c-base is sacred. "
-            "OpenHack and Build Fridays run deep into the night; cafe Wi‑Fi "
-            "still ghosts you between Altbau courtyards."
+            "Hackerspace nights run deep; cafe Wi‑Fi still ghosts you between "
+            "Altbau courtyards."
         ),
     },
     "Da Nang": {
         "color": "#FF6B35",
-        "values": [70, 95, 72, 86, 74],
+        "values": [72, 97, 78, 88, 76],
         "blurb": (
-            "Cà phê sữa đá that could restart a laptop. Frontier Club, AI "
-            "Tinkerers, and Monday Vibe & Coffee keep An Thuong shipping— "
-            "intimate density, beach air, fiber that punches above the skyline."
+            "Cà phê sữa đá that could restart a laptop. Frontier Club and AI "
+            "Tinkerers keep An Thuong shipping—intimate density, beach air, "
+            "and fiber that punches above the skyline."
         ),
     },
     "Lagos": {
         "color": "#F4A261",
-        "values": [86, 65, 92, 48, 96],
+        "values": [88, 62, 94, 52, 97],
         "blurb": (
-            "GDG Lagos, DevFest, and 24-hour buildathons don't do half-speed. "
-            "Yaba hubs sell fiber + generators as a lifestyle; outside them, "
+            "GDG Lagos, DevFest, and hub buildathons don't do half-speed. "
+            "Yaba sells fiber + generators as a lifestyle; outside them, "
             "bandwidth is a side quest and ambition is the ISP."
         ),
     },
     "Singapore": {
         "color": "#2A9D8F",
-        "values": [84, 80, 58, 99, 82],
+        "values": [86, 82, 55, 99, 84],
         "blurb": (
-            "SingaDev lightning, AI Tinkerers demos, Hackapura daytime shipping. "
-            "Kopi-o and third-wave both win; fiber is basically a utility. "
-            "Late-night hacking lives in HackerspaceSG and the rare all-nighter."
+            "AI Tinkerers demos and Hackware show-and-tells; Hackapura ships "
+            "by day. Kopi-o and third-wave both win; fiber is basically a "
+            "utility. Late nights live at HackerspaceSG."
         ),
     },
     "Toronto": {
         "color": "#6A994E",
-        "values": [72, 88, 68, 88, 80],
+        "values": [78, 92, 72, 90, 82],
         "blurb": (
-            "Coffee & Code and Creeds cowork tables, TorontoJS TechTalks, "
-            "Double Down build nights. Third-wave fuel is elite; true late-night "
-            "laptop havens are rarer than a mild February."
+            "Coffee & Code at Creeds, TorontoJS TechTalks, Double Down "
+            "co-hacking. Third-wave fuel is elite; true overnight laptop "
+            "havens are rarer than a mild February."
         ),
     },
 }
