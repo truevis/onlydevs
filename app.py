@@ -71,7 +71,6 @@ with left:
         default=["Bangkok", "Austin", "Berlin", "Singapore"],
         help="Toggle cities like legend chips on a market-profiles radar.",
     )
-    fill = st.slider("Fill opacity", 0.05, 0.45, 0.18, 0.01)
     show_symbols = st.toggle("Show vertices", value=True)
     st.divider()
     if selected:
@@ -105,7 +104,7 @@ with right:
                     "itemStyle": {"color": city["color"]},
                     "areaStyle": {
                         "color": city["color"],
-                        "opacity": fill,
+                        "opacity": 0.18,
                     },
                 }
             )
