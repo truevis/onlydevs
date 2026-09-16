@@ -1,4 +1,4 @@
-﻿"""Onlydevs meetup radar — Streamlit + streamlit-echarts spider chart demo."""
+"""Onlydevs meetup radar — Streamlit + streamlit-echarts spider chart demo."""
 
 from __future__ import annotations
 
@@ -181,6 +181,28 @@ if selected:
     }
 
     st_echarts(options=options, height="560px", key="onlydevs_radar")
+
+# --- Tonight at Only Devs Bangkok ---
+st.divider()
+st.markdown("### Tonight at Only Devs Bangkok")
+st.caption(
+    "Two talks live tonight — join the meetup for architecture that lasts "
+    "and differential dataflow that keeps up with the flood."
+)
+
+c1, c2 = st.columns(2, gap="large")
+with c1:
+    st.image(
+        "assets/talk1-strategic-software-design.png",
+        use_container_width=True,
+        caption="Talk #1 · Oleksandr Polieno (IGLU) — Architecting Software that Lasts",
+    )
+with c2:
+    st.image(
+        "assets/talk2-differential-dataflow.png",
+        use_container_width=True,
+        caption="Talk #2 · Cesar Augusto (nosotro.app) — Incremental Computations with Differential Dataflow",
+    )
 
 st.caption(
     "Chart library: [andfanilo/streamlit-echarts](https://github.com/andfanilo/streamlit-echarts)"
