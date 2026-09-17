@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import pandas as pd
 import streamlit as st
 from streamlit_echarts import st_echarts
 
@@ -86,6 +87,17 @@ CITIES: dict[str, dict] = {
             "havens are rarer than a mild February."
         ),
     },
+}
+
+# Approximate city centers for the meetup-circuit map (lat, lon).
+CITY_COORDS: dict[str, tuple[float, float]] = {
+    "Bangkok": (13.7563, 100.5018),
+    "Austin": (30.2672, -97.7431),
+    "Berlin": (52.5200, 13.4050),
+    "Da Nang": (16.0544, 108.2022),
+    "Lagos": (6.5244, 3.3792),
+    "Singapore": (1.3521, 103.8198),
+    "Toronto": (43.6532, -79.3832),
 }
 
 st.title("Onlydevs City Radar")
@@ -181,6 +193,38 @@ if selected:
     }
 
     st_echarts(options=options, height="560px", key="onlydevs_radar")
+
+# --- Meetup circuit map (selected cities only) ---
+st.divider()
+st.subheader("Meetup circuit on the map")
+st.caption("Pins follow the cities selected above; size hints vibe score.")
+if selected:
+    map_rows = []
+    for name in selected:
+        lat, lon = CITY_COORDS[name]
+        city = CITIES[name]
+        vibe = sum(city["values"]) / len(city["values"])
+        map_rows.append(
+            {
+                "city": name,
+                "lat": lat,
+                "lon": lon,
+                "color": city["color"],
+                "size": 50_000 + vibe * 2_000,
+            }
+        )
+    map_df = pd.DataFrame(map_rows)
+    st.map(
+        map_df,
+        latitude="lat",
+        longitude="lon",
+        color="color",
+        size="size",
+        height=420,
+        width="stretch",
+    )
+else:
+    st.info("Select at least one city to place pins on the map.")
 
 # --- Tonight at Only Devs Bangkok ---
 st.divider()
