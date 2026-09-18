@@ -3,8 +3,16 @@
 from __future__ import annotations
 
 import pandas as pd
+import pydeck as pdk
 import streamlit as st
 from streamlit_echarts import st_echarts
+
+
+def _hex_to_rgba(hex_color: str, alpha: int = 200) -> list[int]:
+    """Convert #RRGGBB to an RGBA list for pydeck layers."""
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return [r, g, b, alpha]
 
 st.set_page_config(
     page_title="Onlydevs · City Radar",
@@ -197,56 +205,94 @@ if selected:
 # --- Meetup circuit map (selected cities only) ---
 st.divider()
 st.subheader("Meetup circuit on the map")
-st.caption("Pins follow the cities selected above; size hints vibe score.")
+st.caption("Click a pin to inspect that city's vibe stats.")
 if selected:
     map_rows = []
     for name in selected:
         lat, lon = CITY_COORDS[name]
         city = CITIES[name]
-        vibe = sum(city["values"]) / len(city["values"])
+        values = city["values"]
+        vibe = sum(values) / len(values)
         map_rows.append(
             {
                 "city": name,
                 "lat": lat,
                 "lon": lon,
-                "color": city["color"],
+                "color": _hex_to_rgba(city["color"]),
                 "size": 50_000 + vibe * 2_000,
+                "vibe": round(vibe),
+                "lightning": values[0],
+                "coffee": values[1],
+                "hacking": values[2],
+                "wifi": values[3],
+                "networking": values[4],
+                "blurb": city["blurb"],
             }
         )
     map_df = pd.DataFrame(map_rows)
-    st.map(
-        map_df,
-        latitude="lat",
-        longitude="lon",
-        color="color",
-        size="size",
+
+    event = st.pydeck_chart(
+        pdk.Deck(
+            map_style=None,
+            initial_view_state=pdk.ViewState(
+                latitude=float(map_df["lat"].mean()),
+                longitude=float(map_df["lon"].mean()),
+                zoom=1.2,
+                pitch=0,
+            ),
+            layers=[
+                pdk.Layer(
+                    "ScatterplotLayer",
+                    data=map_df,
+                    id="meetup-cities",
+                    get_position="[lon, lat]",
+                    get_fill_color="color",
+                    get_radius="size",
+                    pickable=True,
+                    auto_highlight=True,
+                )
+            ],
+            tooltip={
+                "html": (
+                    "<b>{city}</b><br/>"
+                    "Vibe: {vibe}/100<br/>"
+                    "Lightning: {lightning} · Coffee: {coffee}<br/>"
+                    "Hacking: {hacking} · Wi‑Fi: {wifi}<br/>"
+                    "Networking: {networking}"
+                ),
+                "style": {"backgroundColor": "#0f172a", "color": "white"},
+            },
+        ),
         height=420,
         width="stretch",
+        on_select="rerun",
+        selection_mode="single-object",
+        key="meetup_circuit_map",
     )
+
+    selected_objects = event.selection.get("objects", {}).get("meetup-cities", [])
+    if selected_objects:
+        picked = selected_objects[0]
+        city_name = picked["city"]
+        city = CITIES[city_name]
+        score = sum(city["values"]) / len(city["values"])
+        axis_names = [ind["name"] for ind in INDICATORS]
+        stats = " · ".join(
+            f"{axis}: **{value}**"
+            for axis, value in zip(axis_names, city["values"], strict=True)
+        )
+        with st.container(border=True):
+            st.markdown(
+                f"<span style='color:{city['color']};font-weight:700;font-size:1.15rem'>"
+                f"{city_name}</span> · vibe score **{score:.0f}**/100",
+                unsafe_allow_html=True,
+            )
+            st.markdown(stats)
+            st.caption(city["blurb"])
+    else:
+        st.caption("Select a city pin on the map to see its full stats.")
 else:
     st.info("Select at least one city to place pins on the map.")
-
-# --- Tonight at Only Devs Bangkok ---
-st.divider()
-st.markdown("### Tonight at Only Devs Bangkok")
-st.caption(
-    "Two talks live tonight — join the meetup for architecture that lasts "
-    "and differential dataflow that keeps up with the flood."
-)
-
-c1, c2 = st.columns(2, gap="large")
-with c1:
-    st.image(
-        "assets/talk1-strategic-software-design.png",
-        use_container_width=True,
-        caption="Talk #1 · Oleksandr Polieno (IGLU) — Architecting Software that Lasts",
-    )
-with c2:
-    st.image(
-        "assets/talk2-differential-dataflow.png",
-        use_container_width=True,
-        caption="Talk #2 · Cesar Augusto (nosotro.app) — Incremental Computations with Differential Dataflow",
-    )
 
 st.caption(
     "Chart library: [andfanilo/streamlit-echarts](https://github.com/andfanilo/streamlit-echarts)"
